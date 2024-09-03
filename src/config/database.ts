@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'
 dotenv.config()
 import mongoose from "mongoose";
-import { EnvironmentVariables } from '../types';
+import { EnvironmentVariables } from '../types/dbTypes';
 
 const {DATABASE_URI} = process.env as unknown as EnvironmentVariables;
 
