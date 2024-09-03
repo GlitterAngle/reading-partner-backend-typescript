@@ -1,13 +1,23 @@
-import express, { Request, Response } from "express";
+import './config/database.js'
+import 'dotenv/config.js'
 
-const app = express();
-const PORT = 3000;
+import express from 'express'
+import cors from 'cors'
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello, TypeScript!");
-});
+//import routes when they are created
+// import userRoutes from './routes/userRoutes.js'
+// import recordingRoutes from './routes/recordingRoutes.js'
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+const app = express()
+const PORT = process.env.PORT || 3000
 
+app.use(express.json())
+app.use(cors())
+
+//once routes built put them here for the app
+// app.use('/api/user', userRoutes)
+// app.use('/api/recording', recordingRoutes)
+
+app.listen(PORT, function(){
+    console.log(`App running on ${PORT} port`)
+})
