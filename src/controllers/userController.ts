@@ -1,6 +1,7 @@
 import User from "../models/user"
 import Recording from "../models/recording"
 import { Request, Response } from "express";
+import mongoose from "mongoose";
 
 //this is just for testing
 const getAllUsers = async(req: Request,res: Response): Promise<Response> =>{
@@ -64,7 +65,7 @@ const createUser = async(req:Request, res:Response): Promise<Response>=>{
     }
 }
 
-const editUser = async(req: Request, res:Response): Promise<Response>=>{
+const editUser = async(req: Request<{id: string}>, res:Response): Promise<Response>=>{
     try {
         const userToEdit = req.params.id
         const userPayload = req.body

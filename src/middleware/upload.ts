@@ -9,7 +9,7 @@ const s3 = new S3Client({
   credentials: fromEnv(),
 });
 //added for type script 
-const bucketName = process.env.S3_BUCKET_NAME ;
+const bucketName = process.env.AWS_S3_BUCKET_NAME;
 //added for type script 
 if(!bucketName){
     throw new Error('S3_BUCKET_NAME environment not set')
