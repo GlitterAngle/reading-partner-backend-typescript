@@ -6,7 +6,6 @@ export interface UserInfo {
     password: string;
 }
 
-
 export type PasswordCallback = (err:Error | null | undefined, isMatch:boolean) => void
 
 export interface RecordingInfo{
