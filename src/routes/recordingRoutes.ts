@@ -6,9 +6,9 @@ const router = Router();
 
 router.get('/', getAllRecordings);
 
-router.post('/newRecording', upload.fields([
-  { name: 'actorAudio', maxCount: 1 },
-  { name: 'readerAudio', maxCount: 1 }
+router.post('/recordings', upload.fields([
+  { name: 'actorAudio'},
+  { name: 'readerAudio'}
 ]), createNewRecording);
 
 export default router;

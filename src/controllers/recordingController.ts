@@ -19,15 +19,16 @@ const getAllRecordings = async (req: Request, res: Response) : Promise<Response>
 
 const createNewRecording = async (req: Request, res: Response): Promise<Response> => {
   try {
-    console.log('req.body:', req.body);
-    console.log('req.files:', req.files);
-
     //type cast req.files as what you exprect to recieve customeFileRecording extends express.multer.file
     const files= req.files as {[fieldname: string]: CustomeFileRecording[]}
 
     const { user, title, scriptText, cueWord } = req.body;
-    const actorAudioPath = files.actorAudio[0].location;
-    const readerAudioPath = files.readerAudio[0].location;
+    const actorAudioPath = files?.actorAudio?.[0]?.location;
+    const readerAudioPath = files?.readerAudio?.[0]?.location;
+
+    if (!actorAudioPath || !readerAudioPath) {
+      return res.status(400).json({ message: "Required files are missing" });
+    }
 
     const recording = new Recording({
       user,
