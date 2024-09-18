@@ -45,25 +45,26 @@ const getUserByUsername = async(req: Request, res: Response): Promise<Response>=
     }
 }
 
-const createUser = async(req:Request, res:Response): Promise<Response>=>{
-    try {
-        const userPayload = req.body
-        const newUser = await User.create(userPayload)
-        return res.status(200).json({
-            newUser
-        })
-    } catch (error) {
-        console.error('Error creating user: this error comes from your userController file from the createUser function')
-        if(error instanceof Error){
-            return res.status(500).json({
-                message: 'Error creating user',
-                error: error.message
-            })
-        }else{
-            return res.status(500).json({message: "Unknown Error Occured"})
-        }
-    }
-}
+//for testing before the inclusion of auth
+// const createUser = async(req:Request, res:Response): Promise<Response>=>{
+//     try {
+//         const userPayload = req.body
+//         const newUser = await User.create(userPayload)
+//         return res.status(200).json({
+//             newUser
+//         })
+//     } catch (error) {
+//         console.error('Error creating user: this error comes from your userController file from the createUser function')
+//         if(error instanceof Error){
+//             return res.status(500).json({
+//                 message: 'Error creating user',
+//                 error: error.message
+//             })
+//         }else{
+//             return res.status(500).json({message: "Unknown Error Occured"})
+//         }
+//     }
+// }
 
 const editUser = async(req: Request<{id: string}>, res:Response): Promise<Response>=>{
     try {
@@ -123,7 +124,7 @@ const deleteUser = async (req: Request, res: Response): Promise<Response> => {
 export {
     getAllUsers,
     getUserByUsername,
-    createUser,
+    // createUser,
     editUser,
     deleteUser
 }

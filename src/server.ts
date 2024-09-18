@@ -9,7 +9,9 @@ import userRoutes from './routes/userRoutes.js'
 import recordingRoutes from './routes/recordingRoutes.js'
 
 const app = express()
-const PORT = process.env.PORT || 3000
+//process.env.PORT process.env is an object in node holding my env information 
+//.PORT is using dot notation to access my port variable and use it's value 
+const PORT = process.env.PORT
 
 app.use(express.json())
 app.use(cors())
