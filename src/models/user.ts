@@ -1,9 +1,6 @@
 import mongoose, {Schema,Document} from 'mongoose'
 import bcrypt from 'bcrypt'
-import { UserInfo, PasswordCallback } from '../types/modelTypes.js'
-
-//this allows for the information returned by mongoose such as _id
-interface UserInfoModel extends UserInfo, Document {}
+import { UserInfoModel } from '../types/modelTypes.js'
 
 const SALT_ROUNDS = 10
 
@@ -44,8 +41,8 @@ userSchema.pre('save', function(next){
     })
 })
 
-userSchema.methods.comparePassword = function(trypassword:string, cb:PasswordCallback): void{
-    bcrypt.compare(trypassword, this.password, cb)
+userSchema.methods.comparePassword = function(trypassword:string): Promise<boolean>{
+   return bcrypt.compare(trypassword, this.password)
 }
 
 const User = mongoose.model('User', userSchema)
