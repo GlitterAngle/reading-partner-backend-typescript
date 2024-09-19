@@ -15,7 +15,7 @@ export interface RecordingInfo{
     title: string, 
     scriptText: string,
     cueWord: string,
-    actorAudioPath: string,
-    readerAudioPath: string,
+    actorAudioPath: [string],
+    readerAudioPath: [string],
     createdAt: Date
 }

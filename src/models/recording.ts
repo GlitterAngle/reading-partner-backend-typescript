@@ -6,8 +6,8 @@ const recordingSchema : Schema<RecordingInfo> = new mongoose.Schema({
     title: { type: String, required: true },
     scriptText: { type: String, required: true },
     cueWord: { type: String, required: true },
-    actorAudioPath: { type: String, required: true },
-    readerAudioPath: { type: String, required: true },
+    actorAudioPath: { type: [String], required: true },
+    readerAudioPath: { type: [String], required: true },
     createdAt: { type: Date, default: Date.now }
 })
 

@@ -1,12 +1,27 @@
 import Recording from "../models/recording";
 import { Request, Response } from "express";
 import { CustomeFileRecording } from "../types/controllerTypes";
+import mongoose from "mongoose";
 
 
 //this get all is for testing
-const getAllRecordings = async (req: Request, res: Response) : Promise<Response>=> {
+// const getAllRecordings = async (req: Request, res: Response) : Promise<Response>=> {
+//   try {
+//     const recordings = await Recording.find();
+//     return res.status(200).json(recordings);
+//   } catch (error) {
+//     if(error instanceof Error){
+//         return res.status(500).json({message: error.message})
+//     }else{
+//        return res.status(500).json({message: "Unknown Error Occured"})
+//     }
+//   }
+// };
+
+const getAllUserRecordings = async (req: Request, res: Response) : Promise<Response>=> {
   try {
-    const recordings = await Recording.find();
+    const userid = req.params.id
+    const recordings = await Recording.find({user: userid});
     return res.status(200).json(recordings);
   } catch (error) {
     if(error instanceof Error){
@@ -17,26 +32,44 @@ const getAllRecordings = async (req: Request, res: Response) : Promise<Response>
   }
 };
 
+const getSingleScript = async (req: Request, res: Response): Promise<Response> =>{
+  console.log('route hit')
+  try{
+    const recordingId = req.params.id
+    const recordings = await Recording.find({_id: recordingId});
+    return res.status(200).json(recordings);
+  }catch(error){
+    if(error instanceof Error){
+      return res.status(500).json({message: error.message})
+    }else{
+      return res.status(500).json({message: "Unknonw Error Occured"})
+    }
+  }
+}
+
 const createNewRecording = async (req: Request, res: Response): Promise<Response> => {
   try {
     //type cast req.files as what you exprect to recieve customeFileRecording extends express.multer.file
     const files= req.files as {[fieldname: string]: CustomeFileRecording[]}
 
     const { user, title, scriptText, cueWord } = req.body;
-    const actorAudioPath = files?.actorAudio?.[0]?.location;
-    const readerAudioPath = files?.readerAudio?.[0]?.location;
+    //adjust from only storing the first url to storing all file urls in an array
+    const actorAudioPath = files?.actorAudio?.map(file=>file.location)||[];
+    const readerAudioPath = files?.readerAudio?.map(file=>file.location)||[];
 
-    if (!actorAudioPath || !readerAudioPath) {
-      return res.status(400).json({ message: "Required files are missing" });
-    }
+    //removed this because it's ok to have just one audio file depending on script
+    // if (!actorAudioPath || !readerAudioPath) {
+    //   return res.status(400).json({ message: "Required files are missing" });
+    // }
 
     const recording = new Recording({
       user,
       title,
       scriptText,
       cueWord,
-      actorAudioPath,
-      readerAudioPath,
+      //store the array of audio paths
+      actorAudioPath: actorAudioPath,
+      readerAudioPath: readerAudioPath,
     });
 
     await recording.save();
@@ -50,13 +83,17 @@ const createNewRecording = async (req: Request, res: Response): Promise<Response
   }
 };
 
-const deleteRecording = async (req: Request,res: Response)=>{
-    try {
-        const recordingToDelete = req.params.user
-        
-    } catch (error) {
-        
-    }
+const editRecording = async(req: Request, res: Response)=>{
+
 }
 
-export { createNewRecording, getAllRecordings, deleteRecording };
+// const deleteRecording = async (req: Request,res: Response):Promise<Response>=>{
+//     try {
+//         const recordingToDelete = req.params.user
+        
+//     } catch (error) {
+        
+//     }
+// }
+
+export { createNewRecording, getAllUserRecordings, getSingleScript };
