@@ -1,13 +1,14 @@
-import {getAllUsers, getUserByUsername, createUser, deleteUser, editUser} from '../controllers/userController'
-import {Router} from 'express'
+import {getAllUsers, getUserByUsername, deleteUser, editUser} from '../controllers/userController'
+import isLoggedIn from '../middleware/isLoggedIn'
+import Router from 'express'
 
 const router = Router()
 
-router.get('/', getAllUsers)
+router.get('/', isLoggedIn, getAllUsers)
 
 router.get('/:username', getUserByUsername)
 
-router.post('/newUser', createUser)
+// router.post('/newUser', createUser)
 
 router.put('/:id', editUser)
 

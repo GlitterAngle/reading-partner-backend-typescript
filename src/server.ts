@@ -7,6 +7,7 @@ import cors from 'cors'
 //import routes when they are created
 import userRoutes from './routes/userRoutes.js'
 import recordingRoutes from './routes/recordingRoutes.js'
+import authRoutes from './routes/authRoutes.js'
 
 const app = express()
 //process.env.PORT process.env is an object in node holding my env information 
@@ -19,6 +20,7 @@ app.use(cors())
 //once routes built put them here for the app
 app.use('/api/user', userRoutes)
 app.use('/api/recording', recordingRoutes)
+app.use('/api/auth', authRoutes)
 
 app.listen(PORT, function(){
     console.log(`App running on ${PORT} port`)
