@@ -5,7 +5,7 @@ import upload from '../middleware/upload.js';
 
 const router = Router();
 
-router.get('/', getAllRecordings);
+router.get('/', isLoggedIn, getAllRecordings);
 
 router.post('/recordings', isLoggedIn, upload.fields([
   { name: 'actorAudio'},
