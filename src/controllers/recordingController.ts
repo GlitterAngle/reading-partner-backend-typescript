@@ -1,22 +1,22 @@
 import Recording from "../models/recording";
 import { Request, Response } from "express";
 import { CustomeFileRecording } from "../types/controllerTypes";
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
 
 
 //this get all is for testing
-// const getAllRecordings = async (req: Request, res: Response) : Promise<Response>=> {
-//   try {
-//     const recordings = await Recording.find();
-//     return res.status(200).json(recordings);
-//   } catch (error) {
-//     if(error instanceof Error){
-//         return res.status(500).json({message: error.message})
-//     }else{
-//        return res.status(500).json({message: "Unknown Error Occured"})
-//     }
-//   }
-// };
+const getAllRecordings = async (req: Request, res: Response) : Promise<Response>=> {
+  try {
+    const recordings = await Recording.find();
+    return res.status(200).json(recordings);
+  } catch (error) {
+    if(error instanceof Error){
+        return res.status(500).json({message: error.message})
+    }else{
+       return res.status(500).json({message: "Unknown Error Occured"})
+    }
+  }
+};
 
 const getAllUserRecordings = async (req: Request, res: Response) : Promise<Response>=> {
   try {
@@ -83,17 +83,54 @@ const createNewRecording = async (req: Request, res: Response): Promise<Response
   }
 };
 
-const editRecording = async(req: Request, res: Response)=>{
-
+const editRecording = async(req: Request, res: Response):Promise<Response>=>{
+  try {
+    const recordingToEdit = req.params.id
+    const audioPayload = req.files as {[fieldname: string]: CustomeFileRecording[]}
+    const recordingEdit = await Recording.findOneAndUpdate({_id: recordingToEdit}, audioPayload, {new: true})
+    return res.status(200).json({
+      recordingEdit
+    })
+  } catch (error) {
+    if(error instanceof Error){
+      return res.status(500).json({
+        message: 'Error editing audio',
+        error: error.message
+      })
+    } else {
+      return res.status(500).json({
+        message: 'Unknown error occured'
+      })
+    }
+  }
 }
 
-// const deleteRecording = async (req: Request,res: Response):Promise<Response>=>{
-//     try {
-//         const recordingToDelete = req.params.user
-        
-//     } catch (error) {
-        
-//     }
-// }
+const deleteSide = async (req: Request,res: Response):Promise<Response>=>{
+    try {
+        const sideId = req.params.id
+        const deleteSide = await Recording.findByIdAndDelete(sideId)
+        return res.status(200).json({
+          deleteSide
+        })
+    } catch (error) {
+        if(error instanceof Error){
+          return res.status(500).json({
+            message: 'Error deleting side',
+            error: error.message
+          })
+        }else{
+          return res.status(500).json({
+            message: 'Unknown error occured'
+          })
+        }
+    }
+}
 
-export { createNewRecording, getAllUserRecordings, getSingleScript };
+export { 
+  createNewRecording, 
+  getAllUserRecordings, 
+  getSingleScript, 
+  editRecording, 
+  deleteSide,
+  getAllRecordings
+};

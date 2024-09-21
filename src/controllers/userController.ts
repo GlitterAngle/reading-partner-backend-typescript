@@ -75,7 +75,6 @@ const editUser = async(req: Request<{id: string}>, res:Response): Promise<Respon
             editUser
         })
     } catch (error) {
-        console.error('Error editing user: this error comes from your userController file from the editUser function')
         if(error instanceof Error){
            return res.status(500).json({
                 message: 'Error editing user',
